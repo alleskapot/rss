@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity" >
+    <item
+        android:id="@+id/action_starred"
+        android:icon="@drawable/favorite"
+        android:showAsAction="ifRoom"
+        android:title="Starred" />
+    <item
+        android:id="@+id/action_unstarred"
+        android:icon="@drawable/favorite"
+        android:showAsAction="ifRoom"
+        android:title="Unstarred" />
+    <item
+        android:id="@+id/action_read"
+        android:icon="@drawable/read"
+        android:showAsAction="ifRoom"
+        android:title="Read" />
+    <item
+        android:id="@+id/action_unread"
+        android:icon="@drawable/unread"
+        android:showAsAction="ifRoom"
+        android:title="Unread" />
+</menu>

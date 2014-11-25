@@ -6,20 +6,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import at.fhtw.rss.R;
-import at.fhtw.rss.dao.RssFeedDao;
+import at.fhtw.rss.dao.RssItemDao;
 
 /**
- * Created by Daniel on 17.11.2014.
+ * Created by Marco on 25.11.2014.
  */
-public class RssFeedCursorAdapter extends CursorAdapter {
-
+public class RssItemCursorAdapter extends CursorAdapter{
     private Context context;
     private Cursor cursor;
 
-    public RssFeedCursorAdapter(Context context, Cursor c, boolean autoRequery) {
+    public RssItemCursorAdapter(Context context, Cursor c, boolean autoRequery) {
         super(context, c, autoRequery);
         this.context = context;
         this.cursor = c;
@@ -42,10 +42,11 @@ public class RssFeedCursorAdapter extends CursorAdapter {
         if (convertView == null) {
             // Inflate a layout
             LayoutInflater inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.rssfeed, parent, false);
+            convertView = inflater.inflate(R.layout.rssitem, parent, false);
             holder = new ViewHolder();
-            holder.feedTitle = (TextView) convertView.findViewById(R.id.feed_title);
-            holder.feedLink = (TextView) convertView.findViewById(R.id.feed_link);
+            holder.itemTitle = (TextView) convertView.findViewById(R.id.item_title);
+            holder.itemUnread = (ImageView) convertView.findViewById(R.id.item_unread);
+            holder.itemStarred = (ImageView) convertView.findViewById(R.id.item_starred);
             convertView.setTag(holder);
         } else {
             // We recycle a View that already exists.
@@ -53,20 +54,29 @@ public class RssFeedCursorAdapter extends CursorAdapter {
         }
         cursor.moveToPosition(position);
         if (cursor.getCount() > 0) {
-            holder.feedTitle.setText(
+            holder.itemTitle.setText(
                     cursor.getString(
                             cursor.getColumnIndex(
-                                    RssFeedDao.Properties.Title.columnName)));
-            holder.feedLink.setText(
-                    cursor.getString(
-                            cursor.getColumnIndex(
-                                    RssFeedDao.Properties.Link.columnName)));
+                                    RssItemDao.Properties.Title.columnName)));
+            int unreadvis = cursor.getInt(
+                    cursor.getColumnIndex(
+                            RssItemDao.Properties.Read.columnName));
+
+            holder.itemUnread.setVisibility(unreadvis==0 ? View.VISIBLE : View.INVISIBLE);
+
+            int starredvis = cursor.getInt(
+                    cursor.getColumnIndex(
+                            RssItemDao.Properties.Starred.columnName));
+
+            holder.itemStarred.setVisibility(starredvis==1 ? View.VISIBLE : View.INVISIBLE);
+
 
         }
         return convertView;
     }
 
     static class ViewHolder {
-        TextView feedTitle, feedLink;
+        TextView itemTitle;
+        ImageView itemUnread, itemStarred;
     }
 }

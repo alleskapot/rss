@@ -5,7 +5,7 @@
     tools:context="at.fhtw.rss.fragments.RssItemListFragment">
 
     <ListView
-        android:id="@+id/rssItemList"
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></ListView>
 

@@ -46,6 +46,8 @@ public class RssFeedService extends IntentService{
             URL url = new URL(feedUrl);
             feedModel = RssReader.read(url);
 
+
+
             long feedId = createRssFeedEntry(feedModel, intent.getStringExtra(feedModel.getTitle()));
             Log.d("RssReader","New Record id: "+feedId);
             createRssItemEntries(feedId, feedModel.getRssItems());
@@ -59,6 +61,7 @@ public class RssFeedService extends IntentService{
             Log.e("Rss Reader", e.toString() );
             e.printStackTrace();
         }
+
     }
 
     private long createRssItemEntries(long feedId, List<RssItemModel> rssItemModels) {

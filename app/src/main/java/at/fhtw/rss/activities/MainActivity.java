@@ -2,8 +2,13 @@ package at.fhtw.rss.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,11 +19,33 @@ import at.fhtw.rss.dao.RssFeedContentProvider;
 import at.fhtw.rss.dao.RssItemContentProvider;
 import at.fhtw.rss.fragments.RssAddFeedFragment;
 import at.fhtw.rss.fragments.RssFeedListFragment;
+import at.fhtw.rss.fragments.RssItemListFragment;
 
 import static at.fhtw.rss.dao.DaoMaster.DevOpenHelper;
 
 
 public class MainActivity extends Activity {
+
+    private RssFeedBroadcastReceiver feedreceiver = new RssFeedBroadcastReceiver();
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        IntentFilter intentfiler = new IntentFilter();
+        intentfiler.addAction("displayFeedList");
+        intentfiler.addAction("displayItems");
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(feedreceiver, intentfiler);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(feedreceiver);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +60,12 @@ public class MainActivity extends Activity {
 
         DevOpenHelper helper = new DevOpenHelper(this, "rssdb", null);
         SQLiteDatabase db = helper.getWritableDatabase();
+
+
         DaoMaster daoMaster = new DaoMaster(db);
+
+        DaoMaster.dropAllTables(db, true);
+        DaoMaster.createAllTables(db, true);
 
         Log.d("RssReader", "Database Setup complete");
 
@@ -75,8 +107,39 @@ public class MainActivity extends Activity {
                     actionBar.setDisplayHomeAsUpEnabled(true);
                 }
                 return true;
+
+            case R.id.action_feedlist:
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, new RssFeedListFragment())
+                        .addToBackStack(null)
+                        .commit();
+                actionBar = getActionBar();
+                if (actionBar != null) {
+                    actionBar.setDisplayHomeAsUpEnabled(true);
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private class RssFeedBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            // ACTION equals OPEN_FEED, load fragment containing feed items.
+            if (action.equals("displayFeedList")) {
+
+                getFragmentManager().beginTransaction().replace(R.id.container,new RssFeedListFragment()).addToBackStack(null).commit();
+
+            } else if (action.equals("displayItems")) {
+
+                long id =  intent.getLongExtra("feedid", 1L);
+
+                getFragmentManager().beginTransaction().replace(R.id.container,RssItemListFragment.newItemList(id)).addToBackStack(null).commit();
+
+            }
         }
     }
 }

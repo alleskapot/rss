@@ -23,7 +23,7 @@
         android:layout_below="@+id/textView"
         android:layout_alignEnd="@+id/textView"
         android:layout_alignStart="@+id/textView"
-        android:text="http://derstandard.at/?page=rss&amp;ressort=seite1"/>
+        android:text="http://www.computerwelt.at/news/software/?type=100"/>
 
     <Button
         android:layout_width="wrap_content"
