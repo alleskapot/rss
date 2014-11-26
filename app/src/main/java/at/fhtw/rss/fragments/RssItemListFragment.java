@@ -6,8 +6,8 @@ import android.app.Fragment;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +18,7 @@ import java.lang.ref.WeakReference;
 
 import at.fhtw.rss.R;
 import at.fhtw.rss.adapter.RssItemCursorAdapter;
+import at.fhtw.rss.dao.DaoMaster;
 import at.fhtw.rss.dao.RssItemContentProvider;
 import at.fhtw.rss.dao.RssItemDao;
 import at.fhtw.rss.listener.ItemListChoiceModeListener;
@@ -29,6 +30,7 @@ import at.fhtw.rss.listener.ItemListChoiceModeListener;
 public class RssItemListFragment extends ListFragment {
 
     RssItemCursorAdapter adapter;
+    private DaoMaster dao;
 
     public RssItemListFragment() {
         // Required empty public constructor
@@ -65,10 +67,11 @@ public class RssItemListFragment extends ListFragment {
 
         Log.d("Rss Reader", "Open Item in Browser");
 
-        String url = "http://www.example.com";
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
+        Intent intent = new Intent("itemBrowser");
+        intent.putExtra("itemid", id);
+        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+
+
 
 
 

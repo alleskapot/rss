@@ -7,20 +7,10 @@
     <ImageView
         android:id="@+id/item_unread"
         android:layout_width="12dp"
-        android:layout_height="12dp"
+        android:layout_height="32dp"
         android:layout_centerVertical="false"
         android:layout_margin="8dp"
         android:src="@drawable/unread" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Large Text"
-        android:id="@+id/item_title"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
     <ImageView
         android:id="@+id/item_starred"
         android:layout_width="32dp"
@@ -29,4 +19,17 @@
         android:layout_margin="8dp"
         android:background="@android:color/holo_green_dark"
         android:src="@drawable/favorite" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Large Text"
+        android:id="@+id/item_title"
+        android:layout_toRightOf="@id/item_unread"
+        android:layout_toLeftOf="@id/item_starred"
+        android:layout_centerHorizontal="true"
+        />
+
+
 </RelativeLayout>

@@ -7,15 +7,16 @@
         android:showAsAction="ifRoom"
         android:title="Starred" />
     <item
-        android:id="@+id/action_unstarred"
-        android:icon="@drawable/favorite"
-        android:showAsAction="ifRoom"
-        android:title="Unstarred" />
-    <item
         android:id="@+id/action_read"
         android:icon="@drawable/read"
         android:showAsAction="ifRoom"
         android:title="Read" />
+    <item
+        android:id="@+id/action_unstarred"
+        android:icon="@drawable/unfavorite"
+        android:showAsAction="ifRoom"
+        android:title="Unstarred" />
+
     <item
         android:id="@+id/action_unread"
         android:icon="@drawable/unread"
